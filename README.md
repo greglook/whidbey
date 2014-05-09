@@ -2,9 +2,9 @@ whidbey
 =======
 
 This project hacks into [nREPL](https://github.com/clojure/tools.nrepl) to
-replace the default `pr-values` middleware with `render-value`. This watches
-nREPL messages for the `:renderer` key, and uses it to produce the returned
-string value.
+replace the default `pr-values` middleware with the more general
+`render-values`. This watches nREPL messages for the `:renderer` key, and uses
+it to produce the returned string value.
 
 TL;DR: pretty-print REPL values by default!
 
@@ -12,7 +12,7 @@ TL;DR: pretty-print REPL values by default!
 
 To use this middleware, add it as `:nrepl-middleware` to a Leiningen profile.
 For example, to pretty-print all values with
-[Puget](https://github.greglook/puget) (the main motivation of this middleware),
+[Puget](https://github.greglook/puget) (the main motivation of this project),
 you can use the following:
 
 ```clojure
@@ -34,7 +34,7 @@ possible to set the REPLy version with profiles or project files.
 To summarize:
  1. Clone my fork of [REPLy](https://github.com/greglook/reply/tree/nrepl-renderer) with the patch and switch to the `nrepl-renderer` branch.
  2. Ensure REPLy has a `SNAPSHOT` version and `lein install` it locally.
- 3. Clone [Leiningen](https://github.com/technomancy/leiningen) and update the `project.xml` dependency on `reply` to the version above.
+ 3. Clone [Leiningen](https://github.com/technomancy/leiningen) and update the `project.clj` dependency on `reply` to the version above.
  4. Clone this repo and `lein install` it locally.
  5. Add the configuration above to your `user` or `system` profile.
  6. Run `lein repl` and enjoy the colored goodness!
@@ -71,7 +71,7 @@ server and the result communicated back to the client. nREPL accomplishes this
 using messages with an `:op` key. On the server side, a _handler_ and a stack of
 _middleware_ functions (very much like
 [Ring](https://github.com/ring-clojure/ring)) process the messages and send
-back result messages to the client.
+result messages back to the client.
 
 For example, when you type a form like `(+ 1 2 3)`, REPLy sends the server a
 message like:
@@ -91,13 +91,13 @@ another message and sent back to the client's `Transport`:
  :value 6}
 ```
 
-At a higher level in the middleware stack, nREPL's `pr-eval` wraps the
+At a higher level in the middleware stack, nREPL's `pr-values` wraps the
 `Transport` passed to later handlers. When messages are sent, the `:value` is
-transformed into a string using `print-method` or `pr-dup`. This is needed
+transformed into a string using `print-method` or `print-dup`. This is needed
 because the result has to be serialized back over the wire to the client, and
 arbitrary Clojure values are not supported.
 
-## Fixing the Problem
+## Towards a Solution
 
 To add enough functionality to support colored pretty-printing, it turns out to
 be necessary to modify REPLy, but fortunately not nREPL or Leiningen (code,
