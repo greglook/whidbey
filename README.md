@@ -47,6 +47,14 @@ Unfortunately, this _also_ currently requires a custom version of
      (reset! current-command-id command-id)
 ```
 
+To summarize:
+- Clone REPLy and apply the patch.
+- Change the REPLy version to a custom `SNAPSHOT` release and `lein install`.
+- Clone Leiningen and update the `project.xml` dependency on `reply` to your
+  custom version.
+- Add the configuration above to your `user` or `system` profile.
+- Run `lein repl` and enjoy the colored goodness!
+
 ## License
 
 This is free and unencumbered software released into the public domain.
