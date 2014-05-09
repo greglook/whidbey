@@ -1,9 +1,10 @@
 whidbey
 =======
 
-This project hacks into nREPL to replace the default `pr-values` middleware
-with `render-value`. This watches nREPL messages for the `:renderer` key, and
-uses it to produce the returned string value.
+This project hacks into [nREPL](https://github.com/clojure/tools.nrepl) to
+replace the default `pr-values` middleware with `render-value`. This watches
+nREPL messages for the `:renderer` key, and uses it to produce the returned
+string value.
 
 TL;DR: pretty-print REPL values by default!
 
@@ -20,12 +21,9 @@ you can use the following:
   [mvxcvi/whidbey "0.1.0-SNAPSHOT"]]
 
  :repl-options
- {:nrepl-renderer puget.printer/cprint-str
-  :init
-  (require 'clojure.tools.nrepl.middleware.render-values
-           'puget.printer)
-  :nrepl-middleware
-  [clojure.tools.nrepl.middleware.render-values/render-values]}}
+ {:init (require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
+  :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
+  :nrepl-renderer puget.printer/cprint-str}
 ```
 
 Unfortunately, this _also_ currently requires a custom version of REPLy. See
@@ -36,8 +34,8 @@ possible to set the REPLy version with profiles or project files.
 To summarize:
  1. Clone my fork of [REPLy](https://github.com/greglook/reply/tree/nrepl-renderer) with the patch and switch to the `nrepl-renderer` branch.
  2. Ensure REPLy has a `SNAPSHOT` version and `lein install` it locally.
- 3. Clone Leiningen and update the `project.xml` dependency on `reply` to the custom version.
- 4. Clone whidbey and `lein install` it locally.
+ 3. Clone [Leiningen](https://github.com/technomancy/leiningen) and update the `project.xml` dependency on `reply` to the version above.
+ 4. Clone this repo and `lein install` it locally.
  5. Add the configuration above to your `user` or `system` profile.
  6. Run `lein repl` and enjoy the colored goodness!
 
@@ -54,10 +52,7 @@ command:
 ```
 
 I decided that it would be really nice if the REPL just pretty-printed colored
-values _for_ me, so I dove into
-[Leiningen](https://github.com/technomancy/leiningen),
-[REPLy](https://github.com/trptcolin/reply),
-[nREPL](https://github.com/clojure/tools.nrepl).
+values _for_ me, so I dove into the Leiningen/REPLy/nREPL stack.
 
 ## Learning to REPL
 
@@ -74,8 +69,9 @@ However, you're actually interacting with a client/server model, so the text you
 type into the REPL isn't directly interpreted. Instead, in must be sent to the
 server and the result communicated back to the client. nREPL accomplishes this
 using messages with an `:op` key. On the server side, a _handler_ and a stack of
-_middleware_ functions (very much like Ring) processes the messages and send
-back result messages.
+_middleware_ functions (very much like
+[Ring](https://github.com/ring-clojure/ring)) process the messages and send
+back result messages to the client.
 
 For example, when you type a form like `(+ 1 2 3)`, REPLy sends the server a
 message like:
@@ -135,8 +131,8 @@ while typing an expression, REPLy is actually evaluating a completion function
 on the server that searches the current namespace for matching symbols. The
 client then `read-string`s the response to get the list of matches.
 
-If we just pretty-printing _all_ `eval` requests, the results to requests like
-these would contain extra whitespace and ASCII color codes, which break the
+If we just pretty-printed _all_ `eval` requests, the results to requests like
+these would contain extra whitespace and ANSI color codes, which break the
 Clojure reader. We need to be able to select when to use a custom renderer and
 when plain strings are desirable, and the REPL client is the only place we can
 do that.
