@@ -1,8 +1,8 @@
-(defproject lein-crepl "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
-  :license {:name "Public Domain"}
+(defproject mvxcvi/whidbey "0.1.0-SNAPSHOT"
+  :description "nREPL middleware to allow arbitrary value rendering."
+  :url "https://github.com/greglook/whidbey"
+  :license {:name "Public Domain"
+            :url "http://unlicense.org/"}
 
   :dependencies
-  [[org.clojure/clojure "1.5.1"]
-   [org.clojure/tools.nrepl "0.2.3"]])
+  [[org.clojure/tools.nrepl "0.2.3"]])
