@@ -23,7 +23,7 @@ you can use the following:
  :repl-options
  {:init (require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
   :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
-  :nrepl-renderer puget.printer/cprint-str}
+  :nrepl-interactive-eval-options {:renderer puget.printer/cprint-str}}
 ```
 
 Unfortunately, this _also_ currently requires a custom version of REPLy. See
