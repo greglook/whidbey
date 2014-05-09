@@ -48,12 +48,11 @@ Unfortunately, this _also_ currently requires a custom version of
 ```
 
 To summarize:
-- Clone REPLy and apply the patch.
-- Change the REPLy version to a custom `SNAPSHOT` release and `lein install`.
-- Clone Leiningen and update the `project.xml` dependency on `reply` to your
-  custom version.
-- Add the configuration above to your `user` or `system` profile.
-- Run `lein repl` and enjoy the colored goodness!
+ 1. Clone my fork of [REPLy](https://github.com/greglook/reply/tree/nrepl-renderer) with the patch and switch to the `nrepl-renderer` branch.
+ 2. Ensure REPLy has a `SNAPSHOT` version and `lein install` it locally.
+ 3. Clone Leiningen and update the `project.xml` dependency on `reply` to the custom version.
+ 4. Add the configuration above to your `user` or `system` profile.
+ 5. Run `lein repl` and enjoy the colored goodness!
 
 ## License
 
