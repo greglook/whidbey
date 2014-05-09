@@ -2,7 +2,7 @@
   (:require
     [clojure.string :as str]
     (clojure.tools.nrepl
-      middleware
+      [middleware :as middleware]
       transport)
     (clojure.tools.nrepl.middleware
       interruptible-eval
@@ -11,38 +11,57 @@
     clojure.tools.nrepl.transport.Transport))
 
 
-(alter-meta!
-  #'clojure.tools.nrepl.middleware.interruptible-eval/interruptible-eval
-  update-in [:clojure.tools.nrepl.middleware/descriptor :requires]
-  disj #'clojure.tools.nrepl.middleware.pr-values/pr-values)
+(defn- print-renderer
+  "Uses print-dup or print-method to render a value to a string."
+  [v]
+  (let [printer (if *print-dup* print-dup print-method)
+        writer (java.io.StringWriter.)]
+    (printer v writer)
+    (str writer)))
+
+
+(defn- wrap-renderer
+  "Wraps a Transport with code which renders the value of messages sent to
+  it using the provided function."
+  [^Transport transport render-value]
+  (reify Transport
+    (recv [this]
+      (.recv transport))
+    (recv [this timeout]
+      (.recv transport timeout))
+    (send [this resp]
+      (.send transport
+        (if-let [[_ v] (find resp :value)]
+          (let [r (str/trim-newline (render-value v))]
+            (assoc resp :value r))
+          resp))
+      this)))
 
 
 (defn render-values
+  "Middleware wrapper which wraps the handler transport in a rendering layer."
   [handler]
-  ;handler #_
-  (fn [{:keys [^clojure.tools.nrepl.transport.Transport transport renderer] :as msg}]
-    (let [render-value (if renderer
-                         (find-var (symbol renderer))
-                         (if *print-dup* print-dup print-method))
-
-          render-transport
-          (reify clojure.tools.nrepl.transport.Transport
-            (recv [this] (.recv transport))
-            (recv [this timeout] (.recv transport timeout))
-            (send [this resp]
-              (.send transport
-                (if-let [[_ v] (find resp :value)]
-                  (assoc resp :value
-                         (-> (render-value v)
-                             with-out-str
-                             clojure.string/trim))))
-              this))]
-      (println "#'render-value =>" render-value)
-      (handler (assoc msg :transport render-transport)))))
+  (fn [{:keys [transport renderer] :as msg}]
+    (->>
+      (if renderer
+        (find-var (symbol renderer))
+        print-renderer)
+      (wrap-renderer transport)
+      (assoc msg :transport)
+      handler)))
 
 
-(clojure.tools.nrepl.middleware/set-descriptor!
+(middleware/set-descriptor!
   #'render-values
   {:requires #{}
    :expects #{"eval"}
    :handles {}})
+
+
+; Here's where things get ugly. We need to prevent the native `pr-values`
+; middleware from loading, but the `interruptible-eval` middleware explicitly
+; requires it.
+(alter-meta!
+  #'clojure.tools.nrepl.middleware.interruptible-eval/interruptible-eval
+  update-in [:clojure.tools.nrepl.middleware/descriptor :requires]
+  disj #'clojure.tools.nrepl.middleware.pr-values/pr-values)
