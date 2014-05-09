@@ -16,7 +16,7 @@ you can use the following:
 
 ```clojure
  :dependencies
- [[mvxcvi/puget "0.4.0-SNAPSHOT"]
+ [[mvxcvi/puget "0.4.0"]
   [mvxcvi/whidbey "0.1.0-SNAPSHOT"]]
 
  :repl-options
@@ -37,8 +37,9 @@ To summarize:
  1. Clone my fork of [REPLy](https://github.com/greglook/reply/tree/nrepl-renderer) with the patch and switch to the `nrepl-renderer` branch.
  2. Ensure REPLy has a `SNAPSHOT` version and `lein install` it locally.
  3. Clone Leiningen and update the `project.xml` dependency on `reply` to the custom version.
- 4. Add the configuration above to your `user` or `system` profile.
- 5. Run `lein repl` and enjoy the colored goodness!
+ 4. Clone whidbey and `lein install` it locally.
+ 5. Add the configuration above to your `user` or `system` profile.
+ 6. Run `lein repl` and enjoy the colored goodness!
 
 ## Motivation
 
