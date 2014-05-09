@@ -12,7 +12,7 @@ TL;DR: pretty-print REPL values by default!
 
 To use this middleware, add it as `:nrepl-middleware` to a Leiningen profile.
 For example, to pretty-print all values with
-[Puget](https://github.greglook/puget) (the main motivation of this project),
+[Puget](https://github.com/greglook/puget) (the main motivation of this project),
 you can use the following:
 
 ```clojure
