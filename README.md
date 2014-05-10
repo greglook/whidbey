@@ -112,18 +112,17 @@ anyway). The following patch to REPLy's nREPL integration does the trick:
          session-sender (nrepl/client-session client :session session)
 -        message-to-send {:op "eval" :code form :id command-id}
 +        message-to-send (let [msg {:op "eval" :code form :id command-id}]
-+                          (if-let [renderer (:nrepl-renderer options)]
-+                            (assoc msg :renderer renderer)
++                          (if-let [eval-options (:nrepl-interactive-eval-options options)]
++                            (merge eval-options msg)
 +                            msg))
          read-input-line-fn (:read-input-line-fn options)]
      (session-sender message-to-send)
      (reset! current-command-id command-id)
 ```
 
-This change looks for an `:nrepl-renderer` key in the options passed to the
-client. The value of this key should be a namespaced symbol which will resolve
-to a _rendering function_ on the server. Rendering functions accept one argument
-(the value to render) and return a string representation.
+This change looks for an `:nrepl-interactive-eval-options` key in the options
+passed to the client. The value of this key should be a map which contains
+options to merge into the nREPL message for interactive evaluations.
 
 It is necessary to patch REPLy because the client sends `eval` ops to the server
 in situations other than user input. For example, when you tab-complete a name
@@ -146,9 +145,13 @@ be necessary.
 Now we're finally in a position to pretty print our REPL values! This library
 provides a `render-values` middleware which replaces the built-in `pr-values`.
 This watches messages for the `:renderer` key, and uses it to produce the
-returned string value. By default, this falls back to `print-method` or
-`print-dup`, so if you don't specify any custom function in your project's
-`:repl-options` map, it will behave exactly as before.
+returned string value.
+
+The value of `:renderer` should be a symbol which resolves to a _rendering
+function_ on the server. Rendering functions accept one argument (the value to
+render) and return a string representation. If not provided, `render-values`
+falls back to `print-method` or `print-dup`, so if you don't specify anything
+the REPL will behave exactly as before.
 
 Now, `eval` messages are passed down the stack, handled by `interruptible-eval`,
 and the result sent to the `Transport` to send back to the client. The
