@@ -23,7 +23,7 @@ you can use the following:
  :repl-options
  {:init (require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
   :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
-  :nrepl-interactive-eval-options {:renderer puget.printer/cprint-str}}
+  :nrepl-context {:interactive-eval {:renderer puget.printer/cprint-str}}}
 ```
 
 Unfortunately, this _also_ currently requires a custom version of REPLy. See
@@ -101,7 +101,8 @@ arbitrary Clojure values are not supported.
 
 To add enough functionality to support colored pretty-printing, it turns out to
 be necessary to modify REPLy, but fortunately not nREPL or Leiningen (code,
-anyway). The following patch to REPLy's nREPL integration does the trick:
+anyway). The [following patch](https://github.com/trptcolin/reply/pull/138) to
+REPLy's nREPL integration does the trick:
 
 ```diff
 --- a/src/clj/reply/eval_modes/nrepl.clj
@@ -111,18 +112,16 @@ anyway). The following patch to REPLy's nREPL integration does the trick:
          session (or (:session options) @current-session)
          session-sender (nrepl/client-session client :session session)
 -        message-to-send {:op "eval" :code form :id command-id}
-+        message-to-send (let [msg {:op "eval" :code form :id command-id}]
-+                          (if-let [eval-options (:nrepl-interactive-eval-options options)]
-+                            (merge eval-options msg)
-+                            msg))
++        message-to-send (merge (get-in options [:nrepl-context :interactive-eval])
++                               {:op "eval" :code form :id command-id})
          read-input-line-fn (:read-input-line-fn options)]
      (session-sender message-to-send)
      (reset! current-command-id command-id)
 ```
 
-This change looks for an `:nrepl-interactive-eval-options` key in the options
-passed to the client. The value of this key should be a map which contains
-options to merge into the nREPL message for interactive evaluations.
+This change looks for an `:nrepl-context` map in the options passed to the
+client. The values specified under `:interactive-eval` are merged with the
+nREPL message for interactive evaluations.
 
 It is necessary to patch REPLy because the client sends `eval` ops to the server
 in situations other than user input. For example, when you tab-complete a name
