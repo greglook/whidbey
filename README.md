@@ -16,24 +16,24 @@ For example, to pretty-print all values with
 you can use the following:
 
 ```clojure
- :dependencies
- [[mvxcvi/puget "0.4.0"]
-  [mvxcvi/whidbey "0.1.0-SNAPSHOT"]]
+:dependencies
+[[mvxcvi/puget "0.5.0"]
+ [mvxcvi/whidbey "0.1.0-SNAPSHOT"]]
 
- :repl-options
- {:init (require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
-  :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
-  :nrepl-context {:interactive-eval {:renderer puget.printer/cprint-str}}}
+:repl-options
+{:init (require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
+ :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
+ :nrepl-context {:interactive-eval {:renderer puget.printer/cprint-str}}}
 ```
 
-Unfortunately, this _also_ currently requires a custom version of REPLy. See
-below for a more detailed explanation of why. To use this, you'll need to use a
-local checkout of Leiningen with an updated version, since it's currenty not
-possible to set the REPLy version with profiles or project files.
+This _also_ currently requires a snapshot version of REPLy. See below for a more
+detailed explanation of why. You'll need to use a local checkout of Leiningen
+with an updated version, since it's currenty not possible to set the REPLy
+version with profiles or project files.
 
 To summarize:
- 1. Clone my fork of [REPLy](https://github.com/greglook/reply/tree/nrepl-renderer) with the patch and switch to the `nrepl-renderer` branch.
- 2. Ensure REPLy has a `SNAPSHOT` version and `lein install` it locally.
+ 1. Clone [REPLy](https://github.com/trptcolin/reply).
+ 2. Ensure REPLy has a `0.3.1-SNAPSHOT` version or higher, and `lein install` it locally.
  3. Clone [Leiningen](https://github.com/technomancy/leiningen) and update the `project.clj` dependency on `reply` to the version above.
  4. Clone this repo and `lein install` it locally.
  5. Add the configuration above to your `user` or `system` profile.
@@ -135,9 +135,10 @@ Clojure reader. We need to be able to select when to use a custom renderer and
 when plain strings are desirable, and the REPL client is the only place we can
 do that.
 
-Ideally this patch will get merged into REPLy and nREPL will come to support the
-`render-values` middleware natively, at which point this project will no longer
-be necessary.
+This change has been merged into REPLy, and will be generally available once
+released and Leiningen updates its dependency version.  Hopefully nREPL will
+come to support the `render-values` middleware natively, or at least a better
+way to provide a custom 'printing' middleware.
 
 ## Value Rendering
 
