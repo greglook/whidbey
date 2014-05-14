@@ -8,35 +8,58 @@ it to produce the returned string value.
 
 TL;DR: pretty-print REPL values by default!
 
-## Usage
+## Installation
 
-To use this middleware, add it as `:nrepl-middleware` to a Leiningen profile.
-For example, to pretty-print all values with
-[Puget](https://github.com/greglook/puget) (the main motivation of this project),
-you can use the following:
-
-```clojure
-:dependencies
-[[mvxcvi/puget "0.5.1"]
- [mvxcvi/whidbey "0.1.0"]]
-
-:repl-options
-{:init (require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
- :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
- :nrepl-context {:interactive-eval {:renderer puget.printer/cprint-str}}}
-```
-
-This _also_ currently requires a snapshot version of REPLy. See below for a more
-detailed explanation of why. You'll need to use a local checkout of Leiningen
-with an updated version, since it's currenty not possible to set the REPLy
-version with profiles or project files.
+Whidbey currently requires a snapshot version of REPLy (see below for a more
+detailed explanation of why). You'll also need to use a local checkout of
+Leiningen with an updated REPLy version, since it's currenty not possible to set
+this with profiles or project files.
 
 To summarize:
  1. Clone [REPLy](https://github.com/trptcolin/reply), ensure it has a `0.3.1-SNAPSHOT` version or higher, and `lein install` it locally.
  2. Clone [Leiningen](https://github.com/technomancy/leiningen) and update the `project.clj` dependency on `reply` to the version above.
  3. Switch your local `lein` command to a symlink to the `bin/lein` script in the Leiningen repo. You'll need to bootstrap on the first run.
- 4. Add the configuration above to your `user` or `system` profile.
+ 4. Add one of the configurations below to your `user` or `system` profile.
  5. Run `lein repl` and enjoy the colored goodness!
+
+## Usage
+
+The easiest way to use this middleware is by using it as a Leiningen plugin.
+For example, to pretty-print all values with
+[Puget](https://github.com/greglook/puget) (the main motivation of this
+project), you can use the following:
+
+```clojure
+:plugins
+[[mvxcvi/whidbey "0.2.0-SNAPSHOT"]]
+```
+
+This may conflict with existing REPL customizations, so if necessary you can add
+the profile configuration yourself. The plugin basically adds a `whidbey`
+profile with the required options and sets the `repl` profile to include it:
+
+```clojure
+:whidbey
+{:dependencies
+ [[mvxcvi/puget "0.5.1"]
+  [mvxcvi/whidbey "0.2.0-SNAPSHOT"]]
+
+ :repl-options
+ {:init [(require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)]
+  :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
+  :nrepl-context {:interactive-eval {:renderer puget.printer/cprint-str}}}}
+
+:repl
+[:whidbey ...]  ; ... being the existing repl profile, if any
+```
+
+If you have an `:init` key for `:repl-options` in another profile, you should
+wrap it in a `(do ...)` so it merges correctly. You can check this using
+[lein-cprint](https://github.com/greglook/lein-cprint):
+
+```bash
+$ lein with-profile +repl cprint :repl-options
+```
 
 ## Motivation
 

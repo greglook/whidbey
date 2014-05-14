@@ -20,8 +20,7 @@
   [project]
   (let [renderer (or (:whidbey-renderer project)
                      'puget.printer/cprint-str)
-        profile (merge (whidbey-profile renderer)
-                       (:whidbey (:profiles project)))]
+        profile (whidbey-profile renderer)]
     (-> project
         (project/add-profiles {:whidbey profile})
         (update-in [:profiles :repl]
