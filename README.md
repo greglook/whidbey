@@ -18,7 +18,7 @@ you can use the following:
 ```clojure
 :dependencies
 [[mvxcvi/puget "0.5.1"]
- [mvxcvi/whidbey "0.1.0-SNAPSHOT"]]
+ [mvxcvi/whidbey "0.1.0"]]
 
 :repl-options
 {:init (require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
@@ -32,12 +32,11 @@ with an updated version, since it's currenty not possible to set the REPLy
 version with profiles or project files.
 
 To summarize:
- 1. Clone this repo and `lein install` it locally.
- 2. Clone [REPLy](https://github.com/trptcolin/reply), ensure it has a `0.3.1-SNAPSHOT` version or higher, and `lein install` it locally.
- 3. Clone [Leiningen](https://github.com/technomancy/leiningen) and update the `project.clj` dependency on `reply` to the version above.
- 4. Switch your local `lein` command to a symlink to the `bin/lein` script in the Leiningen repo. You'll need to bootstrap on the first run.
- 5. Add the configuration above to your `user` or `system` profile.
- 6. Run `lein repl` and enjoy the colored goodness!
+ 1. Clone [REPLy](https://github.com/trptcolin/reply), ensure it has a `0.3.1-SNAPSHOT` version or higher, and `lein install` it locally.
+ 2. Clone [Leiningen](https://github.com/technomancy/leiningen) and update the `project.clj` dependency on `reply` to the version above.
+ 3. Switch your local `lein` command to a symlink to the `bin/lein` script in the Leiningen repo. You'll need to bootstrap on the first run.
+ 4. Add the configuration above to your `user` or `system` profile.
+ 5. Run `lein repl` and enjoy the colored goodness!
 
 ## Motivation
 
