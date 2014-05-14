@@ -17,7 +17,7 @@ you can use the following:
 
 ```clojure
 :dependencies
-[[mvxcvi/puget "0.5.0"]
+[[mvxcvi/puget "0.5.1"]
  [mvxcvi/whidbey "0.1.0-SNAPSHOT"]]
 
 :repl-options
@@ -101,8 +101,7 @@ arbitrary Clojure values are not supported.
 
 To add enough functionality to support colored pretty-printing, it turns out to
 be necessary to modify REPLy, but fortunately not nREPL or Leiningen (code,
-anyway). The [following patch](https://github.com/trptcolin/reply/pull/138) to
-REPLy's nREPL integration does the trick:
+anyway). The following patch to REPLy's nREPL integration does the trick:
 
 ```diff
 --- a/src/clj/reply/eval_modes/nrepl.clj
@@ -135,11 +134,6 @@ Clojure reader. We need to be able to select when to use a custom renderer and
 when plain strings are desirable, and the REPL client is the only place we can
 do that.
 
-This change has been merged into REPLy, and will be generally available once
-released and Leiningen updates its dependency version.  Hopefully nREPL will
-come to support the `render-values` middleware natively, or at least a better
-way to provide a custom 'printing' middleware.
-
 ## Value Rendering
 
 Now we're finally in a position to pretty print our REPL values! This library
@@ -160,6 +154,19 @@ by using the desired function to render the message value. In Puget's case, this
 means returning a string with embedded ANSI color codes. When REPLy receives
 this message, all it has to do is faithfully reprint the string and the user
 sees nicely colored and pretty-printed text.
+
+## Project Status
+
+Currently, this requires quite a bit of setup. The following changes will make
+things a lot nicer:
+- [X] [REPLy #138](https://github.com/trptcolin/reply/pull/138) to support
+  message context on interactive evals.
+- [ ] [REPLy release 0.3.1](https://github.com/trptcolin/reply) so that it
+  doesn't need to be installed locally.
+- [ ] [Leiningen](https://github.com/technomancy/leiningen) upgrade to REPLy
+  version 0.3.1 or higher, so that it doesn't need to be cloned locally.
+- [ ] [NREPL-55](http://dev.clojure.org/jira/browse/NREPL-55) for a better way
+  to control rendering middleware in the REPL.
 
 ## License
 
