@@ -11,7 +11,7 @@
        [mvxcvi/whidbey "RELEASE"]]
 
       :repl-options
-      {:init (require 'clojure.tools.nrepl.middleware.render-values '~(symbol (namespace renderer)))
+      {:init [(require 'clojure.tools.nrepl.middleware.render-values '~(symbol (namespace renderer)))]
        :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
        :nrepl-context {:interactive-eval {:renderer ~renderer}}}}))
 
