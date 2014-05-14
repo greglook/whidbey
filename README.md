@@ -31,7 +31,7 @@ project), you can use the following:
 
 ```clojure
 :plugins
-[[mvxcvi/whidbey "0.2.0-SNAPSHOT"]]
+[[mvxcvi/whidbey "0.2.0"]]
 ```
 
 This may conflict with existing REPL customizations, so if necessary you can add
@@ -42,7 +42,7 @@ profile with the required options and sets the `repl` profile to include it:
 :whidbey
 {:dependencies
  [[mvxcvi/puget "0.5.1"]
-  [mvxcvi/whidbey "0.2.0-SNAPSHOT"]]
+  [mvxcvi/whidbey "0.2.0"]]
 
  :repl-options
  {:init [(require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)]
