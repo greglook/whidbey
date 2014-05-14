@@ -16,6 +16,17 @@
        :nrepl-context {:interactive-eval {:renderer ~renderer}}}}))
 
 
+(defn- inject-whidbey
+  "Adds :whidbey as a merged default to the given profile. Returns an updated
+  profile value."
+  [profile]
+  (if profile
+    (if-not (some #{:whidbey} profile)
+      [:whidbey profile]
+      profile)
+    [:whidbey]))
+
+
 (defn middleware
   [project]
   (let [renderer (or (:whidbey-renderer project)
@@ -23,5 +34,4 @@
         profile (whidbey-profile renderer)]
     (-> project
         (project/add-profiles {:whidbey profile})
-        (update-in [:profiles :repl]
-                   #(if % [:whidbey %] [:whidbey])))))
+        (update-in [:profiles :repl] inject-whidbey))))
