@@ -24,15 +24,17 @@ To summarize:
 
 ## Usage
 
-The easiest way to use this middleware is by using it as a Leiningen plugin.
-For example, to pretty-print all values with
-[Puget](https://github.com/greglook/puget) (the main motivation of this
-project), you can use the following:
+The easiest way to use this middleware is as a Leiningen plugin. For example,
+to pretty-print all values with [Puget](https://github.com/greglook/puget) (the
+main motivation of this project), you can use the following:
 
 ```clojure
 :plugins
 [[mvxcvi/whidbey "0.2.0"]]
 ```
+
+The plugin uses `:whidbey-renderer` if defined in the project, otherwise it uses
+`cprint-str` from Puget.
 
 This may conflict with existing REPL customizations, so if necessary you can add
 the profile configuration yourself. The plugin basically adds a `whidbey`
@@ -70,7 +72,7 @@ fashion with ANSI coloring. Soon I found myself running this after almost every
 command:
 
 ```clojure
-(puget.printer/cprint *1)
+(cprint *1)
 ```
 
 I decided that it would be really nice if the REPL just pretty-printed colored
