@@ -1,4 +1,4 @@
-(defproject mvxcvi/whidbey "0.2.0"
+(defproject mvxcvi/whidbey "0.2.1"
   :description "nREPL middleware to allow arbitrary value rendering."
   :url "https://github.com/greglook/whidbey"
   :license {:name "Public Domain"
