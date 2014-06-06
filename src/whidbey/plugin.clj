@@ -20,11 +20,13 @@
   "Adds :whidbey as a merged default to the given profile. Returns an updated
   profile value."
   [profile]
-  (if profile
-    (if-not (some #{:whidbey} profile)
+  (if (vector? profile)
+    (if (some #{:whidbey} profile)
+      profile
+      (vec (cons :whidbey profile)))
+    (if profile
       [:whidbey profile]
-      profile)
-    [:whidbey]))
+      [:whidbey])))
 
 
 (defn middleware
