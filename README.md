@@ -50,7 +50,7 @@ $ lein with-profile +repl cprint :repl-options
 
 As I develop Clojure and interact with the REPL, I frequently used
 `clojure.pprint` to get a better display of the results of my commands. Later, I
-wrote [Puget](https://github.greglook/puget) to pretty print in a canonical
+wrote [Puget](https://github.com/greglook/puget) to pretty print in a canonical
 fashion with ANSI coloring. Soon I found myself running this after almost every
 command:
 
