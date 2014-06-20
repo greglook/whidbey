@@ -7,7 +7,7 @@
   [renderer]
   (when renderer
     `{:dependencies
-      [[mvxcvi/puget "0.5.1"]
+      [[mvxcvi/puget "0.5.2"]
        [mvxcvi/whidbey "RELEASE"]]
 
       :repl-options
