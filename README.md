@@ -17,7 +17,7 @@ main motivation of this project), you can use the following in your `user` or
 
 ```clojure
 :plugins
-[[mvxcvi/whidbey "0.2.1"]]
+[[mvxcvi/whidbey "0.2.2"]]
 ```
 
 The plugin uses `:whidbey-renderer` if defined in the project, otherwise it uses
@@ -30,7 +30,7 @@ the profile configuration yourself:
 :repl
 {:dependencies
  [[mvxcvi/puget "0.5.2"]
-  [mvxcvi/whidbey "0.2.1"]]
+  [mvxcvi/whidbey "0.2.2"]]
 
  :repl-options
  {:init (require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
