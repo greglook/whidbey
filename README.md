@@ -6,12 +6,14 @@ guts to replace the default `pr-values` middleware with the more general
 `render-values`. This watches nREPL messages for the `:renderer` key, and uses
 it to produce the returned string value.
 
-TL;DR: pretty-print REPL values by default!
+TL;DR: pretty-print colored REPL values by default!
 
 ## Usage
 
-The easiest way to use Whidbey is as a Leiningen plugin. For example, to
-pretty-print all values with [Puget](https://github.com/greglook/puget) (the
+The easiest way to use Whidbey is as a Leiningen plugin. Note that this requires
+Leiningen version 2.4.2 or higher for functionality in REPLy 0.3.1.
+
+To pretty-print all values with [Puget](https://github.com/greglook/puget) (the
 main motivation of this project), you can use the following in your `user` or
 `system` profile:
 
