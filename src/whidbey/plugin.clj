@@ -4,16 +4,22 @@
 
 
 (defn whidbey-profile
-  [renderer]
-  (when renderer
-    `{:dependencies
-      [[mvxcvi/puget "0.5.2"]
-       [mvxcvi/whidbey "RELEASE"]]
+  [options]
+  `{:dependencies
+    [[mvxcvi/puget "RELEASE"]
+     [mvxcvi/whidbey "RELEASE"]]
 
-      :repl-options
-      {:init [(require 'clojure.tools.nrepl.middleware.render-values '~(symbol (namespace renderer)))]
-       :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
-       :nrepl-context {:interactive-eval {:renderer ~renderer}}}}))
+    :repl-options
+    {:init [(require 'clojure.tools.nrepl.middleware.render-values
+                     'puget.printer)
+            (let [opts# ~options
+                  colors# (merge (:color-scheme puget.printer/*options*)
+                                 (:color-scheme opts#))
+                  opts# (merge puget.printer/*options* opts#)
+                  opts# (assoc opts# :color-scheme colors#)]
+              (alter-var-root #'puget.printer/*options* (constantly opts#)))]
+     :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
+     :nrepl-context {:interactive-eval {:renderer puget.printer/cprint-str}}}})
 
 
 (defn- inject-whidbey
@@ -31,9 +37,7 @@
 
 (defn middleware
   [project]
-  (let [renderer (or (:whidbey-renderer project)
-                     'puget.printer/cprint-str)
-        profile (whidbey-profile renderer)]
+  (let [profile (whidbey-profile (:puget-options project))]
     (-> project
         (project/add-profiles {:whidbey profile})
         (update-in [:profiles :repl] inject-whidbey))))
