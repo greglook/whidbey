@@ -20,10 +20,23 @@ main motivation of this project), you can use the following in your `user` or
 ```clojure
 :plugins
 [[mvxcvi/whidbey "0.2.2"]]
+
+; printing options are customizable:
+:puget-options
+{:width 180
+ :map-delimiter ","
+ :print-meta true
+ :color-scheme
+ {:delimiter [:blue]
+  :tag [:bold :red]
+  ...}}
 ```
 
-The plugin uses `:whidbey-renderer` if defined in the project, otherwise it uses
-`cprint-str` from Puget.
+See the Puget
+[`*options*`](https://github.com/greglook/puget/blob/master/src/puget/printer.clj)
+var for more possibilities.
+
+### Troubleshooting
 
 This may conflict with existing REPL customizations, so if necessary you can add
 the profile configuration yourself:
@@ -31,8 +44,8 @@ the profile configuration yourself:
 ```clojure
 :repl
 {:dependencies
- [[mvxcvi/puget "0.5.2"]
-  [mvxcvi/whidbey "0.2.2"]]
+ [[mvxcvi/puget "RELEASE"]
+  [mvxcvi/whidbey "RELEASE"]]
 
  :repl-options
  {:init (require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
@@ -41,8 +54,9 @@ the profile configuration yourself:
 ```
 
 If you have an `:init` key for `:repl-options` in another profile, you should
-wrap it in a `(do ...)` so it merges correctly. You can check this using the
-lein-pprint or [lein-cprint](https://github.com/greglook/lein-cprint) plugins:
+wrap it in a vector or `(do ...)` so it merges correctly. You can check this
+using the lein-pprint or [lein-cprint](https://github.com/greglook/lein-cprint)
+plugins:
 
 ```bash
 $ lein with-profile +repl cprint :repl-options
