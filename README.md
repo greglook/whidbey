@@ -19,7 +19,7 @@ main motivation of this project), you can use the following in your `user` or
 
 ```clojure
 :plugins
-[[mvxcvi/whidbey "0.2.2"]]
+[[mvxcvi/whidbey "0.3.0"]]
 
 ; printing options are customizable:
 :puget-options
