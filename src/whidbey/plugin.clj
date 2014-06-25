@@ -10,14 +10,8 @@
      [mvxcvi/whidbey "RELEASE"]]
 
     :repl-options
-    {:init [(require 'clojure.tools.nrepl.middleware.render-values
-                     'puget.printer)
-            (let [opts# ~options
-                  colors# (merge (:color-scheme puget.printer/*options*)
-                                 (:color-scheme opts#))
-                  opts# (merge puget.printer/*options* opts#)
-                  opts# (assoc opts# :color-scheme colors#)]
-              (alter-var-root #'puget.printer/*options* (constantly opts#)))]
+    {:init [(require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
+            (alter-var-root #'puget.printer/*options* puget.printer/merge-options ~options)]
      :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
      :nrepl-context {:interactive-eval {:renderer puget.printer/cprint-str}}}})
 
