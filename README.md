@@ -19,12 +19,12 @@ main motivation of this project), you can use the following in your `user` or
 
 ```clojure
 :plugins
-[[mvxcvi/whidbey "0.3.0"]]
+[[mvxcvi/whidbey "0.3.1"]]
 
 ; printing options are customizable:
 :puget-options
 {:width 180
- :map-delimiter ","
+ :map-delimiter ""
  :print-meta true
  :color-scheme
  {:delimiter [:blue]
@@ -48,7 +48,8 @@ the profile configuration yourself:
   [mvxcvi/whidbey "RELEASE"]]
 
  :repl-options
- {:init (require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
+ {:init [(require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
+         (alter-var-root #'puget.printer/*options* puget.printer/merge-options {:width ...})]
   :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
   :nrepl-context {:interactive-eval {:renderer puget.printer/cprint-str}}}}
 ```
