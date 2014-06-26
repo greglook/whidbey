@@ -9,11 +9,18 @@
     [[mvxcvi/puget "RELEASE"]
      [mvxcvi/whidbey "RELEASE"]]
 
+    :injections
+    [(do (require 'puget.printer)
+         (alter-var-root
+           #'puget.printer/*options*
+           puget.printer/merge-options
+           ~options))]
+
     :repl-options
-    {:init [(require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
-            (alter-var-root #'puget.printer/*options* puget.printer/merge-options ~options)]
-     :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
-     :nrepl-context {:interactive-eval {:renderer puget.printer/cprint-str}}}})
+    {:nrepl-middleware
+     [clojure.tools.nrepl.middleware.render-values/render-values]
+     :nrepl-context
+     {:interactive-eval {:renderer puget.printer/cprint-str}}}})
 
 
 (defn- inject-whidbey
