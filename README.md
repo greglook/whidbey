@@ -19,7 +19,7 @@ main motivation of this project), you can use the following in your `user` or
 
 ```clojure
 :plugins
-[[mvxcvi/whidbey "0.3.1"]]
+[[mvxcvi/whidbey "0.3.2"]]
 
 ; printing options are customizable:
 :puget-options
@@ -47,20 +47,26 @@ the profile configuration yourself:
  [[mvxcvi/puget "RELEASE"]
   [mvxcvi/whidbey "RELEASE"]]
 
+ :injections
+ [(do (require 'puget.printer)
+      (alter-var-root
+        #'puget.printer/*options*
+        puget.printer/merge-options
+        {:width ...}))]
+
  :repl-options
- {:init [(require 'clojure.tools.nrepl.middleware.render-values 'puget.printer)
-         (alter-var-root #'puget.printer/*options* puget.printer/merge-options {:width ...})]
-  :nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
-  :nrepl-context {:interactive-eval {:renderer puget.printer/cprint-str}}}}
+ {:nrepl-middleware
+  [clojure.tools.nrepl.middleware.render-values/render-values]
+  :nrepl-context
+  {:interactive-eval {:renderer puget.printer/cprint-str}}}}
 ```
 
-If you have an `:init` key for `:repl-options` in another profile, you should
-wrap it in a vector or `(do ...)` so it merges correctly. You can check this
-using the lein-pprint or [lein-cprint](https://github.com/greglook/lein-cprint)
+If you experience errors, you can check how the profiles are being merged using
+the lein-pprint or [lein-cprint](https://github.com/greglook/lein-cprint)
 plugins:
 
 ```bash
-$ lein with-profile +repl cprint :repl-options
+$ lein with-profile +repl cprint :injections :repl-options
 ```
 
 ## Motivation and History
