@@ -20,8 +20,10 @@
     {:nrepl-middleware
      [clojure.tools.nrepl.middleware.render-values/render-values]
      :nrepl-context
-     {:interactive-eval {:renderer puget.printer/cprint-str}}}})
+     {:interactive-eval {:renderer puget.printer/pprint-str}}}})
 
+(def default-puget-options
+  {:print-color true})
 
 (defn- inject-whidbey
   "Adds :whidbey as a merged default to the given profile. Returns an updated
@@ -38,7 +40,8 @@
 
 (defn middleware
   [project]
-  (let [profile (whidbey-profile (:puget-options project))]
+  (let [profile (whidbey-profile (merge default-puget-options
+                                        (:puget-options project)))]
     (-> project
         (project/add-profiles {:whidbey profile})
         (update-in [:profiles :repl] inject-whidbey))))
