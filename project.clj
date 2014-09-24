@@ -5,4 +5,9 @@
             :url "http://unlicense.org/"}
 
   :dependencies
-  [[org.clojure/tools.nrepl "0.2.3"]])
+  [[org.clojure/tools.nrepl "0.2.3"]]
+
+  :profiles
+  {:dev
+   {:dependencies
+    [[org.clojure/clojure "1.6.0"]]}})
