@@ -30,12 +30,12 @@
   profile value."
   [profile]
   (if (vector? profile)
-    (if (some #{:whidbey} profile)
+    (if (some #{::whidbey} profile)
       profile
-      (vec (cons :whidbey profile)))
+      (vec (cons ::whidbey profile)))
     (if profile
-      [:whidbey profile]
-      [:whidbey])))
+      [::whidbey profile]
+      [::whidbey])))
 
 
 (defn middleware
@@ -43,5 +43,5 @@
   (let [profile (whidbey-profile (merge default-puget-options
                                         (:puget-options project)))]
     (-> project
-        (project/add-profiles {:whidbey profile})
+        (project/add-profiles {::whidbey profile})
         (update-in [:profiles :repl] inject-whidbey))))
