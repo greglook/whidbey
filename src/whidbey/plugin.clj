@@ -22,7 +22,6 @@
   [project]
   (let [profile (whidbey-profile (:puget-options project))
         included (:included-profiles (meta project))]
-    (prn included)
     (if (some #{::profile} included)
       project
       (-> project
