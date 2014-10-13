@@ -5,7 +5,8 @@
             :url "http://unlicense.org/"}
 
   :dependencies
-  [[org.clojure/tools.nrepl "0.2.3"]]
+  [[mvxcvi/puget "0.6.4"]
+   [org.clojure/tools.nrepl "0.2.3"]]
 
   :profiles
   {:dev
