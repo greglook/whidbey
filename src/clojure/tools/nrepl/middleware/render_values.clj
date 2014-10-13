@@ -65,3 +65,7 @@
   #'clojure.tools.nrepl.middleware.interruptible-eval/interruptible-eval
   update-in [:clojure.tools.nrepl.middleware/descriptor :requires]
   disj #'clojure.tools.nrepl.middleware.pr-values/pr-values)
+
+; Make pr-values a no-op to prevent re-inclusion from messing things up.
+(alter-var-root #'clojure.tools.nrepl.middleware.pr-values/pr-values
+                (constantly identity))
