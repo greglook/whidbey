@@ -20,10 +20,10 @@
 
 (defn middleware
   [project]
-  (let [profile (whidbey-profile (:puget-options project))
+  (let [options (:puget-options project)
         included (:included-profiles (meta project))]
     (if (some #{::profile} included)
       project
       (-> project
-          (project/add-profiles {::profile profile})
+          (project/add-profiles {::profile (whidbey-profile options)})
           (project/merge-profiles [::profile])))))
