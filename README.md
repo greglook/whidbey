@@ -1,6 +1,8 @@
 whidbey
 =======
 
+[![Dependency Status](https://www.versioneye.com/user/projects/543d75fe64e43a7498000213/badge.svg?style=flat)](https://www.versioneye.com/user/projects/543d75fe64e43a7498000213)
+
 This project reaches into [nREPL](https://github.com/clojure/tools.nrepl)'s
 guts to replace the default `pr-values` middleware with the more general
 `render-values`. This watches nREPL messages for the `:renderer` key, and uses
@@ -23,7 +25,7 @@ main motivation of this project), you can add the following in your `user`,
 `system`, or `repl` profile:
 
 ```clojure
-:plugins [[mvxcvi/whidbey "0.4.0"]]
+:plugins [[mvxcvi/whidbey "0.4.1"]]
 
 ; customize printing options:
 :puget-options {:width 180
