@@ -6,7 +6,7 @@
 
   :dependencies
   [[mvxcvi/puget "0.6.4"]
-   [org.clojure/tools.nrepl "0.2.3"]]
+   [org.clojure/tools.nrepl "0.2.6"]]
 
   :profiles
   {:dev
