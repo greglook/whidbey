@@ -6,7 +6,7 @@
 (defn whidbey-profile
   [options]
   `{:dependencies [[mvxcvi/puget "0.6.4"]
-                   [mvxcvi/whidbey "0.4.0-SNAPSHOT"]]
+                   [mvxcvi/whidbey "0.4.1"]]
 
     :injections [(do (require 'whidbey.render)
                      (alter-var-root
