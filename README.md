@@ -25,7 +25,7 @@ main motivation of this project), you can add the following in your `user`,
 `system`, or `repl` profile:
 
 ```clojure
-:plugins [[mvxcvi/whidbey "0.4.2"]]
+:plugins [[mvxcvi/whidbey "0.5.1"]]
 
 ; customize printing options:
 :puget-options {:width 180
