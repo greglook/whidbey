@@ -6,8 +6,8 @@
 
 
 ;; These versions are spliced into the project dependencies.
-(def puget-version "0.7.1")
-(def whidbey-version "0.5.1")
+(def puget-version "0.8.0-SNAPSHOT")
+(def whidbey-version "0.6.0-SNAPSHOT")
 
 
 (defn- add-dependencies
