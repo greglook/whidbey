@@ -5,6 +5,7 @@
 
 (defn whidbey-profile
   [options]
+  ; TODO: how to keep dependencies out of POM files?
   `{:dependencies [[mvxcvi/puget "0.7.1"]
                    [mvxcvi/whidbey "0.5.1"]]
 
