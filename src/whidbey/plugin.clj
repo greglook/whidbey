@@ -48,17 +48,24 @@
 
 
 (defn middleware
-  "Rewrites the project to include Whidbey's customizations when the `:repl`
-  profile is active."
+  "Rewrites the project to include Whidbey's customizations when the project
+  includes one of the target profiles."
   [project]
-  (cond
-    ; Idempotent if the project has already been updated.
-    (::included (meta project))
-      project
+  ; TODO: stop accepting :puget-options eventually.
+  (let [options (:whidbey project (:puget-options project))
+        active-profiles (:included-profiles (meta project))
+        target-profiles (:target-profiles options #{:repl})]
+    (cond
+      ; FIXME: Don't activate on standalone-repls because Puget doesn't load.
+      (nil? (:name project))
+        project
 
-    ; Only modify the project for repl invocations.
-    (some #{:repl} (:included-profiles (meta project)))
-      (let [options (:whidbey project (:puget-options project))]
+      ; Idempotent if the project has already been updated.
+      (::included (meta project))
+        project
+
+      ; Only modify the project if desired profiles are present.
+      (some (set target-profiles) active-profiles)
         (-> project
             (add-dependencies
               `[mvxcvi/puget ~puget-version]
@@ -70,7 +77,7 @@
               'clojure.tools.nrepl.middleware.render-values/render-values)
             (set-interactive-eval-renderer
               'whidbey.render/render-str)
-            (vary-meta assoc ::included true)))
+            (vary-meta assoc ::included true))
 
-    ; Otherwise, return project unchanged.
-    :else project))
+      ; Otherwise, return project unchanged.
+      :else project)))
