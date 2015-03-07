@@ -20,7 +20,7 @@
 
 (defn middleware
   [project]
-  (let [options (:puget-options project)
+  (let [options (:whidbey project (:puget-options project))
         included (:included-profiles (meta project))]
     (if (some #{::profile} included)
       project
