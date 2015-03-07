@@ -7,4 +7,5 @@
   :dependencies [[mvxcvi/puget "0.7.1"]
                  [org.clojure/tools.nrepl "0.2.7"]]
 
-  :profiles {:dev {:dependencies [[org.clojure/clojure "1.6.0"]]}})
+  :profiles {:dev {:dependencies [[leiningen-core "2.4.2"]
+                                  [org.clojure/clojure "1.6.0"]]}})
