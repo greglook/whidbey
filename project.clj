@@ -4,8 +4,7 @@
   :license {:name "Public Domain"
             :url "http://unlicense.org/"}
 
-  :dependencies [[mvxcvi/puget "0.7.1"]
-                 [org.clojure/tools.nrepl "0.2.7"]]
+  :deploy-branches ["master"]
+  :eval-in-leiningen true
 
-  :profiles {:dev {:dependencies [[leiningen-core "2.4.2"]
-                                  [org.clojure/clojure "1.6.0"]]}})
+  :dependencies [[mvxcvi/puget "0.8.0-SNAPSHOT"]])
