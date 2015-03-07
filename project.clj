@@ -7,4 +7,5 @@
   :deploy-branches ["master"]
   :eval-in-leiningen true
 
-  :dependencies [[mvxcvi/puget "0.8.0-SNAPSHOT"]])
+  :dependencies [[mvxcvi/puget "0.8.0-SNAPSHOT"]
+                 [org.clojure/data.codec "0.1.0"]])
