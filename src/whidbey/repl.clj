@@ -24,13 +24,13 @@
   (URI. uri))
 
 
-(defn extend-notation!
+(defmacro extend-notation!
   "Implements the `ExtendedNotation` protocol from Puget for the given type,
   setting the rendering function and updating the reader in `*data-readers*`."
   [tag t renderer reader]
-  (when-not (extends? data/ExtendedNotation t)
-    (data/extend-tagged-value t tag renderer)
-    (alter-var-root *data-readers* assoc tag reader)))
+  `(when-not (extends? data/ExtendedNotation ~t)
+     (data/extend-tagged-value ~t '~tag ~renderer)
+     (alter-var-root #'default-data-readers assoc '~tag ~reader)))
 
 
 (defn init!
@@ -38,8 +38,9 @@
   [options]
   (render/update-options! options)
   (alter-var-root #'pr-values (constantly identity))
-  (extend-notation! 'whidbey/uri URI str read-uri)
-  (extend-notation! 'whidbey/bin
-                    (class (byte-array 0))
-                    #(apply str (map char (b64/encode %)))
-                    read-bin))
+  (when (:extend-notation options true)
+    (extend-notation! whidbey/uri URI str read-uri)
+    (extend-notation! whidbey/bin
+                      (class (byte-array 0))
+                      #(apply str (map char (b64/encode %)))
+                      read-bin)))
