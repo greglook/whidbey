@@ -5,9 +5,25 @@
     [leiningen.core.project :as project]))
 
 
-;; These versions are spliced into the project dependencies.
-(def puget-version "0.8.0-SNAPSHOT")
-(def whidbey-version "0.6.0-SNAPSHOT")
+(defn- find-plugin-version
+  "Looks up the plugins in the project map and tries to find the version
+  specified for the given symbol. Returns nil if none matches."
+  [project plugin]
+  (try
+    (some (fn [[p v]] (when (= p plugin) v))
+          (:plugins project))
+    (catch Exception e
+      nil)))
+
+
+(defn- plugin-dependency
+  "Looks up the version for the given plugin, or sets it to `\"RELEASE\"`.
+  Returns a dependency vector entry."
+  [project plugin]
+  (vector
+   plugin
+   (or (find-plugin-version project plugin)
+       "RELEASE")))
 
 
 (defn- add-dependencies
@@ -68,8 +84,7 @@
       (some (set target-profiles) active-profiles)
         (-> project
             (add-dependencies
-              `[mvxcvi/puget ~puget-version]
-              `[mvxcvi/whidbey ~whidbey-version])
+              (plugin-dependency project 'mvxcvi/whidbey))
             (add-repl-init
               `(require 'whidbey.repl)
               `(whidbey.repl/init! ~options))
