@@ -28,12 +28,12 @@ main motivation of this project), you can add the following in your `user`,
 :plugins [[mvxcvi/whidbey "0.5.1"]]
 
 ; customize printing options:
-:puget-options {:width 180
-                :map-delimiter ""
-                :print-meta true
-                :color-scheme {:delimiter [:blue]
-                               :tag [:bold :red]
-                               ...}}
+:whidbey {:width 180
+          :map-delimiter ""
+          :print-meta true
+          :color-scheme {:delimiter [:blue]
+                         :tag [:bold :red]
+                         ...}}
 ```
 
 See the Puget
@@ -42,8 +42,20 @@ var for the available configuration.
 
 ### Troubleshooting
 
-This may conflict with existing REPL customizations, so if necessary you can add
-the [profile configuration](src/whidbey/plugin.clj) yourself.
+Sometimes, there are types which Puget has trouble rendering. These can be
+excluded from pretty-printing by adding their symbol to the `:exclude-types` set
+in the options. These types will be printed with Puget's 'unknown type'
+rendering. If you want to use these types' `print-method` instead, set the
+`:print-fallback` option to `:print`:
+
+```clojure
+:whidbey {:print-fallback :print
+          :exclude-types #{datomic.db.DB ...}
+          ...}
+```
+
+Whidbey may also conflict with existing REPL customizations, so if necessary you
+can add the [profile configuration](src/whidbey/plugin.clj) yourself.
 
 If you experience errors, you can check how the profiles are being merged using
 the lein-pprint or [lein-cprint](https://github.com/greglook/lein-cprint)
