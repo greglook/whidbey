@@ -18,27 +18,50 @@ TL;DR: pretty-print colored REPL values by default!
 The easiest way to use Whidbey is as a Leiningen plugin. Note that this requires
 Leiningen version 2.4.2 or higher for functionality in REPLy 0.3.1.
 
+To pretty-print all values with [Puget](https://github.com/greglook/puget), add
+the following to your `user`, `system`, or `repl` profile:
+
 [![Clojars Project](http://clojars.org/mvxcvi/whidbey/latest-version.svg)](http://clojars.org/mvxcvi/whidbey)
 
-To pretty-print all values with [Puget](https://github.com/greglook/puget) (the
-main motivation of this project), you can add the following in your `user`,
-`system`, or `repl` profile:
+### Configuration
+
+Whidbey passes rendering options into Puget from the `:whidbey` key in the
+profile map:
 
 ```clojure
-:plugins [[mvxcvi/whidbey "0.5.1"]]
-
-; customize printing options:
 :whidbey {:width 180
           :map-delimiter ""
+          :extend-notation true
           :print-meta true
           :color-scheme {:delimiter [:blue]
                          :tag [:bold :red]
-                         ...}}
+                         ...}
+          ...}
 ```
 
 See the Puget
 [`*options*`](https://github.com/greglook/puget/blob/master/src/puget/printer.clj)
 var for the available configuration.
+
+Additionally, Whidbey adds some convenience tagged-literal extensions for binary
+data and URIs. The extensions update the `default-data-readers` var to support
+round-tripping the tagged representations:
+
+```clojure
+=> (java.net.URI. "http://github.com/greglook")
+#whidbey/uri "http://github.com/greglook"
+
+=> (.getBytes "foo bar baz")
+#whidbey/bin "Zm9vIGJhciBiYXo="
+
+=> #whidbey/bin "b25lIG1vcmUgdGltZSwgbXVzaWNzIGdvdCBtZSBmZWVsaW5nIHNvIGZyZWU="
+#whidbey/bin "b25lIG1vcmUgdGltZSwgbXVzaWNzIGdvdCBtZSBmZWVsaW5nIHNvIGZyZWU="
+```
+
+This is controlled by the `:extend-notation` option, which defaults to `true`.
+You can disable the extensions by setting it to `false`, or for more selective
+control you can specify a collection of keywords to enable. The keys match the
+tag names, so currently `:bin` and `:uri` are valid.
 
 ### Troubleshooting
 
@@ -54,30 +77,13 @@ rendering. If you want to use these types' `print-method` instead, set the
           ...}
 ```
 
-Whidbey may also conflict with existing REPL customizations, so if necessary you
-can add the [profile configuration](src/whidbey/plugin.clj) yourself.
-
-If you experience errors, you can check how the profiles are being merged using
-the lein-pprint or [lein-cprint](https://github.com/greglook/lein-cprint)
-plugins:
+Whidbey may also conflict with existing REPL customizations. If you experience
+errors, you can check how the profiles are being merged using the lein-pprint or
+[lein-cprint](https://github.com/greglook/lein-cprint) plugins:
 
 ```bash
-$ lein with-profile +repl cprint :injections :repl-options
+$ lein with-profile +repl cprint :repl-options
 ```
-
-## Project Status
-
-Whidbey used to require quite a bit of setup. Fortunately, the following changes
-have made things a lot nicer:
-- [X] [REPLy #138](https://github.com/trptcolin/reply/pull/138) to support
-  message context on interactive evals.
-- [X] [REPLy release 0.3.1](https://github.com/trptcolin/reply) so that it
-  doesn't need to be installed locally.
-- [X] [Leiningen](https://github.com/technomancy/leiningen) upgrade to REPLy
-  version 0.3.1 or higher, so that it doesn't need to be cloned locally. (Done
-  as of 2.4.2)
-- [ ] [NREPL-55](http://dev.clojure.org/jira/browse/NREPL-55) for a better way
-  to control rendering middleware in the REPL.
 
 ## License
 
