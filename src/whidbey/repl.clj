@@ -38,9 +38,15 @@
   [options]
   (render/update-options! options)
   (alter-var-root #'pr-values (constantly identity))
-  (when (:extend-notation options true)
-    (extend-notation! whidbey/uri URI str read-uri)
-    (extend-notation! whidbey/bin
-                      (class (byte-array 0))
-                      #(apply str (map char (b64/encode %)))
-                      read-bin)))
+  (let [extend-option (:extend-notation options true)
+        should-extend? (case extend-option
+                         true  (constantly true)
+                         false (constantly false)
+                         #(some (partial = %) extend-option))]
+    (when (should-extend? :bin)
+      (extend-notation! whidbey/bin
+                        (class (byte-array 0))
+                        #(apply str (map char (b64/encode %)))
+                        read-bin))
+    (when (should-extend? :uri)
+      (extend-notation! whidbey/uri URI str read-uri))))

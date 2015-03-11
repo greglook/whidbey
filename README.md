@@ -44,7 +44,7 @@ See the Puget
 var for the available configuration.
 
 Additionally, Whidbey adds some convenience tagged-literal extensions for binary
-data and URIs. It also updates the `default-data-readers` var to support
+data and URIs. The extensions update the `default-data-readers` var to support
 round-tripping the tagged representations:
 
 ```clojure
@@ -58,8 +58,10 @@ round-tripping the tagged representations:
 #whidbey/bin "b25lIG1vcmUgdGltZSwgbXVzaWNzIGdvdCBtZSBmZWVsaW5nIHNvIGZyZWU="
 ```
 
-If this is undesirable, you can disable it by setting the `:extend-notation`
-option to false.
+This is controlled by the `:extend-notation` option, which defaults to `true`.
+You can disable the extensions by setting it to `false`, or for more selective
+control you can specify a collection of keywords to enable. The keys match the
+tag names, so currently `:bin` and `:uri` are valid.
 
 ### Troubleshooting
 
