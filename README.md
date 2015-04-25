@@ -73,7 +73,7 @@ rendering. If you want to use these types' `print-method` instead, set the
 
 ```clojure
 :whidbey {:print-fallback :print
-          :exclude-types #{datomic.db.DB ...}
+          :escape-types #{'datomic.db.Db 'datomic.btset.BTSet ...}
           ...}
 ```
 
