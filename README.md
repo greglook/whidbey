@@ -16,10 +16,10 @@ TL;DR: pretty-print colored REPL values by default!
 ## Usage
 
 The easiest way to use Whidbey is as a Leiningen plugin. Note that this requires
-Leiningen version 2.4.2 or higher for functionality in REPLy 0.3.1.
+Leiningen version 2.5.1 or higher for profile and plugin functionality.
 
 To pretty-print all values with [Puget](https://github.com/greglook/puget), add
-the following to your `user`, `system`, or `repl` profile:
+the following to your `user` or `system` profile:
 
 [![Clojars Project](http://clojars.org/mvxcvi/whidbey/latest-version.svg)](http://clojars.org/mvxcvi/whidbey)
 
@@ -82,7 +82,7 @@ errors, you can check how the profiles are being merged using the lein-pprint or
 [lein-cprint](https://github.com/greglook/lein-cprint) plugins:
 
 ```bash
-$ lein with-profile +repl cprint :repl-options
+$ lein with-profile +whidbey/repl cprint :repl-options
 ```
 
 ## License
