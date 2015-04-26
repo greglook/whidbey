@@ -29,8 +29,9 @@
 
 
 (defn middleware
-  "Rewrites the project to include Whidbey's customizations when the project
-  includes one of the target profiles."
+  "Adds a `whidbey/repl` profile to the project containing Whidbey's repl
+  customizations. The profile is tagged with metadata which will cause it to be
+  merged for the repl task."
   [project]
   (if (:whidbey/repl (:profiles project))
     project
