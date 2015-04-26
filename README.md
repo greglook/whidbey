@@ -1,7 +1,7 @@
 whidbey
 =======
 
-[![Dependency Status](https://www.versioneye.com/user/projects/543d75fe64e43a7498000213/badge.svg?style=flat)](https://www.versioneye.com/clojure/mvxcvi:whidbey/0.6.0)
+[![Dependency Status](https://www.versioneye.com/user/projects/543d75fe64e43a7498000213/badge.svg?style=flat)](https://www.versioneye.com/clojure/mvxcvi:whidbey)
 
 This project reaches into [nREPL](https://github.com/clojure/tools.nrepl)'s
 guts to replace the default `pr-values` middleware with the more general
