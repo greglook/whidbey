@@ -32,17 +32,9 @@
   "Rewrites the project to include Whidbey's customizations when the project
   includes one of the target profiles."
   [project]
-  (cond
-    ; FIXME: Don't activate on standalone-repls because Puget doesn't load.
-    (nil? (:name project))
-      project
-
-    ; Idempotent if the profile already exists.
-    (:whidbey/repl (:profiles project))
-      project
-
-    :else
-      (let [options (:whidbey project)
-            version (find-plugin-version project 'mvxcvi/whidbey)
-            profile (whidbey-profile version options)]
-        (project/add-profiles project {:whidbey/repl profile}))))
+  (if (:whidbey/repl (:profiles project))
+    project
+    (let [options (:whidbey project)
+          version (find-plugin-version project 'mvxcvi/whidbey)
+          profile (whidbey-profile version options)]
+      (project/add-profiles project {:whidbey/repl profile}))))
