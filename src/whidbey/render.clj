@@ -6,7 +6,8 @@
 (def options
   "Currently configured Puget options."
   {:print-color true
-   :exclude-types #{'datomic.db.DB}})
+   :escape-types #{'datomic.btset.BTSet
+                   'datomic.db.Db}})
 
 
 (defn update-options!
