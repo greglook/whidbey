@@ -8,21 +8,6 @@
     java.net.URI))
 
 
-(defn read-bin
-  "Reads a base64-encoded string into a byte array. Suitable as a data-reader
-  for `whidbey/bin` literals."
-  ^bytes
-  [^String bin]
-  (b64/decode (.getBytes bin)))
-
-
-(defn read-uri
-  "Constructs a URI from a string value. Suitable as a data-reader for
-  `whidbey/uri` literals."
-  ^URI
-  [^String uri]
-  (URI. uri))
-
 
 (defmacro extend-notation!
   "Implements the `ExtendedNotation` protocol from Puget for the given type,
