@@ -2,11 +2,13 @@
   (:require
     [puget.printer :as puget]))
 
+;; ## Rendering Options
 
 (def options
   "Currently configured Puget options."
   {:print-color true
-   :escape-types #{'datomic.btset.BTSet
+   :escape-types #{'clj_http.headers.HeaderMap
+                   'datomic.btset.BTSet
                    'datomic.db.Db}})
 
 
