@@ -1,21 +1,8 @@
 (ns whidbey.repl
   (:require
-    [clojure.data.codec.base64 :as b64]
     [clojure.tools.nrepl.middleware.pr-values :refer [pr-values]]
-    [puget.data :as data]
-    [whidbey.render :as render])
-  (:import
-    java.net.URI))
-
-
-
-(defmacro extend-notation!
-  "Implements the `ExtendedNotation` protocol from Puget for the given type,
-  setting the rendering function and updating the reader in `*data-readers*`."
-  [tag t renderer reader]
-  `(when-not (extends? data/ExtendedNotation ~t)
-     (data/extend-tagged-value ~t '~tag ~renderer)
-     (alter-var-root #'default-data-readers assoc '~tag ~reader)))
+    [whidbey.render :as render]
+    [whidbey.types :as types]))
 
 
 (defn init!
@@ -23,15 +10,6 @@
   [options]
   (render/update-options! options)
   (alter-var-root #'pr-values (constantly identity))
-  (let [extend-option (:extend-notation options true)
-        should-extend? (case extend-option
-                         true  (constantly true)
-                         false (constantly false)
-                         #(some (partial = %) extend-option))]
-    (when (should-extend? :bin)
-      (extend-notation! whidbey/bin
-                        (class (byte-array 0))
-                        #(apply str (map char (b64/encode %)))
-                        read-bin))
-    (when (should-extend? :uri)
-      (extend-notation! whidbey/uri URI str read-uri))))
+  (if (:extend-notation options)
+    (doseq [[tag reader] types/tag-readers]
+      (alter-var-root #'default-data-readers assoc tag reader))))
