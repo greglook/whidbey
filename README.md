@@ -35,9 +35,8 @@ profile map:
           ...}
 ```
 
-See the Puget
-[`*options*`](https://github.com/greglook/puget/blob/master/src/puget/printer.clj)
-var for the available configuration.
+See the [`puget.printer`](https://greglook.github.io/puget/api/puget.printer.html)
+namespace for the available configuration.
 
 Additionally, Whidbey adds some convenience tagged-literal extensions for binary
 data and URIs. The extensions update the `default-data-readers` var to support
@@ -54,16 +53,15 @@ round-tripping the tagged representations:
 #whidbey/bin "b25lIG1vcmUgdGltZSwgbXVzaWNzIGdvdCBtZSBmZWVsaW5nIHNvIGZyZWU="
 ```
 
-This is controlled by the `:extend-notation` option, which defaults to `true`.
-You can disable the extensions by setting it to `false`, or selectively include
-them by specifying a collection of keywords.
+This is controlled by the `:extend-notation` option. Other type extensions can
+be added by providing a `:print-handlers` dispatch function.
 
 ### Troubleshooting
 
 Sometimes, there are types which Puget has trouble rendering. These can be
 excluded from pretty-printing by adding their symbol to the `:escape-types` set
-in the options. These types will be printed with Puget's 'unknown type'
-rendering. If you want to use these types' `print-method` instead, set the
+in the options. These types will be rendered with the normal Clojure printer.
+If you want to use these types' `print-method` instead, set the
 `:print-fallback` option to `:print`:
 
 ```clojure
