@@ -22,7 +22,7 @@
   (->
     `{:dependencies [[mvxcvi/whidbey ~(or version "RELEASE")]]
       :repl-options {:nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
-                     :nrepl-context {:interactive-eval {:renderer whidbey.render/render-str}}
+                     :nrepl-context {:interactive-eval {:renderer whidbey.repl/render-str}}
                      :init (do (require 'whidbey.repl)
                                (whidbey.repl/init! ~options))}}
     (vary-meta assoc :repl true)))
