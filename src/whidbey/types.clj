@@ -3,7 +3,9 @@
   strings."
   (:require
     [clojure.data.codec.base64 :as b64]
-    [puget.printer :as puget]))
+    [puget.printer :as puget])
+  (:import
+    java.net.URI))
 
 
 (defn bin-str
