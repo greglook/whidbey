@@ -1,52 +1,65 @@
 (ns whidbey.repl
   (:require
-    [clojure.data.codec.base64 :as b64]
     [clojure.tools.nrepl.middleware.pr-values :refer [pr-values]]
-    [puget.data :as data]
-    [whidbey.render :as render])
-  (:import
-    java.net.URI))
+    [puget.dispatch :as dispatch]
+    [puget.printer :as puget]
+    [whidbey.types :as types]))
 
 
-(defn read-bin
-  "Reads a base64-encoded string into a byte array. Suitable as a data-reader
-  for `whidbey/bin` literals."
-  ^bytes
-  [^String bin]
-  (b64/decode (.getBytes bin)))
+;; ## Value Rendering
+
+(def printer
+  "Currently configured Puget printer record."
+  (puget/pretty-printer
+    {:print-color true
+     :extend-notation true
+     :seq-limit 100
+     :escape-types #{'clj_http.headers.HeaderMap
+                     'datomic.btset.BTSet
+                     'datomic.db.Db}}))
 
 
-(defn read-uri
-  "Constructs a URI from a string value. Suitable as a data-reader for
-  `whidbey/uri` literals."
-  ^URI
-  [^String uri]
-  (URI. uri))
+(def print-handlers
+  "Custom handler lookup for Whidbey's printer."
+  (dispatch/chained-lookup
+    (fn [t]
+      (when (and (class? t)
+                 (seq (:escape-types printer))
+                 (some #{(symbol (.getName ^Class t))}
+                       (:escape-types printer)))
+        puget/pr-handler))
+    (fn [t]
+      (when-let [custom-lookup (:print-handlers printer)]
+        (custom-lookup t)))
+    (fn [t]
+      (when (:extend-notation printer)
+        (types/tag-handlers t)))
+    puget/common-handlers))
 
 
-(defmacro extend-notation!
-  "Implements the `ExtendedNotation` protocol from Puget for the given type,
-  setting the rendering function and updating the reader in `*data-readers*`."
-  [tag t renderer reader]
-  `(when-not (extends? data/ExtendedNotation ~t)
-     (data/extend-tagged-value ~t '~tag ~renderer)
-     (alter-var-root #'default-data-readers assoc '~tag ~reader)))
+(defn render-str
+  "Renders the given value to a display string by pretty-printing it using Puget
+  and the configured options."
+  [value]
+  (-> printer
+      (assoc :print-handlers print-handlers)
+      (puget/render-str value)))
+
+
+
+;; ## Option Control
+
+(defn update-options!
+  "Updates the current rendering options by merging in the supplied map."
+  [opts]
+  (alter-var-root #'printer puget/merge-options opts))
 
 
 (defn init!
   "Initializes the repl to use Whidbey's customizations."
   [options]
-  (render/update-options! options)
+  (update-options! options)
   (alter-var-root #'pr-values (constantly identity))
-  (let [extend-option (:extend-notation options true)
-        should-extend? (case extend-option
-                         true  (constantly true)
-                         false (constantly false)
-                         #(some (partial = %) extend-option))]
-    (when (should-extend? :bin)
-      (extend-notation! whidbey/bin
-                        (class (byte-array 0))
-                        #(apply str (map char (b64/encode %)))
-                        read-bin))
-    (when (should-extend? :uri)
-      (extend-notation! whidbey/uri URI str read-uri))))
+  (if (:extend-notation printer)
+    (doseq [[tag reader] types/tag-readers]
+      (alter-var-root #'default-data-readers assoc tag reader))))
