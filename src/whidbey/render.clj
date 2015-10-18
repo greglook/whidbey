@@ -21,7 +21,7 @@
 (defn update-options!
   "Updates the current rendering options by merging in the supplied map."
   [opts]
-  (alter-var-root #'options puget/merge-options opts))
+  (alter-var-root #'printer puget/merge-options opts))
 
 
 (def print-handlers

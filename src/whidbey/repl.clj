@@ -10,6 +10,6 @@
   [options]
   (render/update-options! options)
   (alter-var-root #'pr-values (constantly identity))
-  (if (:extend-notation render/options)
+  (if (:extend-notation render/printer)
     (doseq [[tag reader] types/tag-readers]
       (alter-var-root #'default-data-readers assoc tag reader))))
