@@ -12,6 +12,7 @@
   (puget/pretty-printer
     {:print-color true
      :extend-notation true
+     :seq-limit 100
      :escape-types #{'clj_http.headers.HeaderMap
                      'datomic.btset.BTSet
                      'datomic.db.Db}}))
