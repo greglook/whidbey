@@ -27,15 +27,17 @@
 (def print-handlers
   "Custom handler lookup for Whidbey's printer."
   (dispatch/chained-lookup
-    (dispatch/symbolic-lookup
-      (fn [t]
-        (when (some #{t} (:escape-types options))
-          puget/pr-handler)))
     (fn [t]
-      (when-let [custom-lookup (:print-handlers options)]
-        (custom-lookup options)))
+      (when (and (class? t)
+                 (seq (:escape-types printer))
+                 (some #{(symbol (.getName ^Class t))}
+                       (:escape-types printer)))
+        puget/pr-handler))
     (fn [t]
-      (when (:extend-notation options)
+      (when-let [custom-lookup (:print-handlers printer)]
+        (custom-lookup t)))
+    (fn [t]
+      (when (:extend-notation printer)
         (types/tag-handlers t)))
     puget/common-handlers))
 
