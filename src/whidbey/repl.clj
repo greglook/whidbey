@@ -27,7 +27,7 @@
                  (seq (:escape-types printer))
                  (some #{(symbol (.getName ^Class t))}
                        (:escape-types printer)))
-        puget/pr-handler))
+        puget/unknown-handler))
     (fn [t]
       (when-let [custom-lookup (:print-handlers printer)]
         (custom-lookup t)))
