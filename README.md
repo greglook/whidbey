@@ -1,7 +1,7 @@
 whidbey
 =======
 
-[![Dependency Status](https://www.versioneye.com/user/projects/543d75fe64e43a7498000213/badge.svg?style=flat)](https://www.versioneye.com/clojure/mvxcvi:whidbey)
+[![Dependency Status](https://www.versioneye.com/clojure/mvxcvi:whidbey/badge.svg)](https://www.versioneye.com/clojure/mvxcvi:whidbey)
 
 This is a plugin for [Leiningen](http://leiningen.org/) which changes the REPL
 to pretty-print results with [Puget](https://github.com/greglook/puget).
