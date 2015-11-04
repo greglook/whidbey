@@ -60,6 +60,16 @@ with a tag symbol key pointing to a formatting function. When the type is
 encountered, it will be rendered as a tagged literal with a form from calling
 the formatter on the value.
 
+For example, to render class values as tagged types, you can add this to your
+`:whidbey` config:
+
+```clojure
+:tag-types {java.lang.Class {'class #(symbol (.getName %))}}}
+```
+
+If the type name or the formatter function are not available at load time, you
+can quote them to suppress evaluation until those types are printed.
+
 ### Troubleshooting
 
 Sometimes, there are types which Puget has trouble rendering. These can be
