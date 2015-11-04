@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+...
+
+## [1.3.0] - 2015-11-03
+
 ### Changed
 - Change from `:print-handlers` to `:tag-types` using nested maps. This makes
   Leiningen profile config more composable since maps are recursively merged.
@@ -111,7 +115,8 @@ First "stable" release!
 - Add `whidbey.plugin` namespace to automatically enable rendering in Leiningen
   `repl` tasks.
 
-[Unreleased]: https://github.com/greglook/whidbey/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/greglook/whidbey/compare/1.3.0...HEAD
+[1.3.0]: https://github.com/greglook/whidbey/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/greglook/whidbey/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/greglook/whidbey/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/greglook/whidbey/compare/1.0.0...1.1.0
