@@ -2,6 +2,7 @@ whidbey
 =======
 
 [![Dependency Status](https://www.versioneye.com/clojure/mvxcvi:whidbey/badge.svg)](https://www.versioneye.com/clojure/mvxcvi:whidbey)
+[![Join the chat at https://gitter.im/greglook/whidbey](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/greglook/whidbey)
 
 This is a plugin for [Leiningen](http://leiningen.org/) which changes the REPL
 to pretty-print results with [Puget](https://github.com/greglook/puget).
