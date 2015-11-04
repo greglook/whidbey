@@ -2,8 +2,7 @@
   "Rendering extensions for various custom types such as byte arrays and URI
   strings."
   (:require
-    [clojure.data.codec.base64 :as b64]
-    [puget.printer :as puget])
+    [clojure.data.codec.base64 :as b64])
   (:import
     java.net.URI))
 
@@ -30,10 +29,10 @@
   (URI. uri))
 
 
-(def tag-handlers
+(def tag-types
   "Extra print-handlers for Whidbey's repl tag extensions."
-  {(class (byte-array 0)) (puget/tagged-handler 'whidbey/bin bin-str)
-   java.net.URI           (puget/tagged-handler 'whidbey/uri str)})
+  {(symbol "[B") {'whidbey/bin bin-str}
+   'java.net.URI {'whidbey/uri str}})
 
 
 (def tag-readers

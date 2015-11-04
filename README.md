@@ -55,7 +55,10 @@ round-tripping the tagged representations:
 ```
 
 This is controlled by the `:extend-notation` option. Other type extensions can
-be added by providing a `:print-handlers` dispatch function.
+be added by providing a `:tag-types` map. This should map type symbols to a map
+with a tag symbol key pointing to a formatting function. When the type is
+encountered, it will be rendered as a tagged literal with a form from calling
+the formatter on the value.
 
 ### Troubleshooting
 

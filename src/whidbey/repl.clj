@@ -22,18 +22,20 @@
 (def print-handlers
   "Custom handler lookup for Whidbey's printer."
   (dispatch/chained-lookup
-    (fn [t]
+    (fn escape-handlers [t]
       (when (and (class? t)
                  (seq (:escape-types printer))
                  (some #{(symbol (.getName ^Class t))}
                        (:escape-types printer)))
         puget/unknown-handler))
-    (fn [t]
-      (when-let [custom-lookup (:print-handlers printer)]
-        (custom-lookup t)))
-    (fn [t]
-      (when (:extend-notation printer)
-        (types/tag-handlers t)))
+    (fn tag-handlers [t]
+      (when (and t (:extend-notation printer))
+        (let [types (merge types/tag-types (:tag-types printer))
+              t-sym (symbol (.getName ^Class t))]
+          (when-let [[tag formatter] (first (get types t-sym))]
+            (puget/tagged-handler tag (if (symbol? formatter)
+                                        (resolve formatter)
+                                        formatter))))))
     puget/common-handlers))
 
 
