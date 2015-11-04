@@ -7,13 +7,29 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-- Made tagged handlers much easier to use.
+### Changed
+- Change from `:print-handlers` to `:tag-types` using nested maps. This makes
+  Leiningen profile config more composable since maps are recursively merged.
 
 ## [1.2.0] - 2015-10-29
 
+### Changed
+- Upgrade Puget to 1.0.0.
+
 ## [1.1.1] - 2015-10-20
 
+### Changed
+- Upgrade Puget to 0.9.2.
+
+### Fixed
+- Use `puget/unknown-handler` for escaped types instead of `pr-handler`.
+
 ## [1.1.0] - 2015-10-18
+
+### Changed
+- Upgrade Puget to 0.9.1.
+- Keep a `PrettyPrinter` record instead of a raw options map.
+- Update to use new Puget print-handler logic.
 
 ## [1.0.0] - 2015-04-26
 
@@ -95,7 +111,7 @@ First "stable" release!
 - Add `whidbey.plugin` namespace to automatically enable rendering in Leiningen
   `repl` tasks.
 
-[Unreleased]: https://github.com/greglook/puget/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/greglook/whidbey/compare/1.0.0...HEAD
 [1.2.0]: https://github.com/greglook/whidbey/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/greglook/whidbey/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/greglook/whidbey/compare/1.0.0...1.1.0
