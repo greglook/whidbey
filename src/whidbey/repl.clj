@@ -31,8 +31,9 @@
     (fn tag-handlers [t]
       (when (and t (:extend-notation printer))
         (let [types (merge types/tag-types (:tag-types printer))
-              t-sym (symbol (.getName ^Class t))]
-          (when-let [[tag formatter] (first (get types t-sym))]
+              handlers (or (get types t)
+                           (get types (symbol (.getName ^Class t))))]
+          (when-let [[tag formatter] (first handlers)]
             (puget/tagged-handler tag (if (symbol? formatter)
                                         (resolve formatter)
                                         formatter))))))
