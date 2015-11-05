@@ -7,6 +7,8 @@ whidbey
 This is a plugin for [Leiningen](http://leiningen.org/) which changes the REPL
 to pretty-print results with [Puget](https://github.com/greglook/puget).
 
+![repl demo](demo.gif)
+
 Internally, Whidbey reaches into [nREPL](https://github.com/clojure/tools.nrepl)
 to replace the default `pr-values` rendering middleware.  See the
 [history](HISTORY.md) for more on the motivations and implementation details
