@@ -9,6 +9,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ...
 
+## [1.3.1] - 2016-10-07
+
+### Changed
+- Upgrade `mvxcvi/puget` to 1.0.1
+
 ## [1.3.0] - 2015-11-03
 
 ### Changed
@@ -115,7 +120,8 @@ First "stable" release!
 - Add `whidbey.plugin` namespace to automatically enable rendering in Leiningen
   `repl` tasks.
 
-[Unreleased]: https://github.com/greglook/whidbey/compare/1.3.0...HEAD
+[Unreleased]: https://github.com/greglook/whidbey/compare/1.3.1...HEAD
+[1.3.1]: https://github.com/greglook/whidbey/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/greglook/whidbey/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/greglook/whidbey/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/greglook/whidbey/compare/1.1.0...1.1.1
