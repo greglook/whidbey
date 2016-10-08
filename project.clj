@@ -8,5 +8,5 @@
   :eval-in-leiningen true
 
   :dependencies
-  [[mvxcvi/puget "1.0.0"]
+  [[mvxcvi/puget "1.0.1"]
    [org.clojure/data.codec "0.1.0"]])
