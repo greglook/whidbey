@@ -1,4 +1,4 @@
-(defproject mvxcvi/whidbey "1.3.2"
+(defproject mvxcvi/whidbey "2.0.0-SNAPSHOT"
   :description "nREPL middleware to allow arbitrary value rendering."
   :url "https://github.com/greglook/whidbey"
   :license {:name "Public Domain"
@@ -6,7 +6,8 @@
 
   :deploy-branches ["master"]
   :eval-in-leiningen true
+  :min-lein-version "2.8.2"
 
   :dependencies
-  [[mvxcvi/puget "1.0.2"]
-   [org.clojure/data.codec "0.1.0"]])
+  [[mvxcvi/puget "1.0.3"]
+   [org.clojure/data.codec "0.1.1"]])

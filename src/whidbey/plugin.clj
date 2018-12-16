@@ -21,14 +21,13 @@
   [version options]
   (->
     `{:dependencies [[mvxcvi/whidbey ~(or version "RELEASE")]]
-      :repl-options {:nrepl-middleware [clojure.tools.nrepl.middleware.render-values/render-values]
-                     :nrepl-context {:interactive-eval {:renderer whidbey.repl/render-str}}
+      :repl-options {:nrepl-context {:interactive-eval {:printer whidbey.repl/render-str}}
                      :init (do (require 'whidbey.repl)
                                (whidbey.repl/init! ~options))}}
     (vary-meta assoc :repl true)))
 
 
-(defn middleware
+(defn repl-pprint
   "Adds a `whidbey/repl` profile to the project containing Whidbey's repl
   customizations. The profile is tagged with metadata which will cause it to be
   merged for the repl task."
