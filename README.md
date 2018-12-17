@@ -6,18 +6,26 @@ to pretty-print results with [Puget](https://github.com/greglook/puget).
 
 ![repl demo](demo.gif)
 
-Internally, Whidbey reaches into [nREPL](https://github.com/clojure/tools.nrepl)
-to replace the default `pr-values` rendering middleware.  See the
-[history](HISTORY.md) for more on the motivations and implementation details
-behind this project.
+Internally, Whidbey integrates with the [nREPL](https://github.com/nrepl/nrepl)
+`pr-values` middleware to provide a custom pretty-printer for the results of
+evaluated forms in the REPL. See the [history doc](HISTORY.md) for more on the
+motivations and implementation details behind this project.
+
 
 ## Usage
 
 To use Whidbey, add it to the `:plugins` vector in your `user` or `system`
-profile. Note that this requires Leiningen version 2.5.1 or higher for profile
-and plugin functionality.
+profile. Note that this requires Leiningen version 2.8.2 or higher for the
+necessary nREPL and plugin functionality.
 
 [![Clojars Project](http://clojars.org/mvxcvi/whidbey/latest-version.svg)](http://clojars.org/mvxcvi/whidbey)
+
+You'll also need to activate the plugin middleware; to do this add the following
+to your profile as well:
+
+```clojure
+:middleware [whidbey.plugin/repl-pprint]
+```
 
 ### Configuration
 
@@ -38,8 +46,18 @@ profile map:
 See the [`puget.printer`](https://greglook.github.io/puget/api/puget.printer.html)
 namespace for the available configuration.
 
-Additionally, Whidbey adds some convenience tagged-literal extensions for binary
-data and URIs. The extensions update the `default-data-readers` var to support
+If you feel like adjusting Whidbey's configuration at runtime, you can use the
+`whidbey.repl/update-options!` function. This will affect all subsequent
+messages rendered.
+
+If you need to further customize the responses from the REPL, Whidbey respects
+any `:print-options` set on the `:op :eval` message. These will be merged into
+the normal rendering configuration, but will not affect subsequent messages.
+
+### Tag Extensions
+
+Whidbey adds some convenience tagged-literal extensions for binary data and
+URIs. The extensions update the `default-data-readers` var to support
 round-tripping the tagged representations:
 
 ```clojure
@@ -63,7 +81,8 @@ For example, to render class values as tagged types, you can add this to your
 `:whidbey` config:
 
 ```clojure
-:tag-types {java.lang.Class {'class #(symbol (.getName %))}}}
+:tag-types
+{java.lang.Class {'java/class #(symbol (.getName %))}}}
 ```
 
 If the type name or the formatter function are not available at load time, you
@@ -90,6 +109,7 @@ errors, you can check how the profiles are being merged using the lein-pprint or
 ```bash
 $ lein with-profile +whidbey/repl cprint :repl-options
 ```
+
 
 ## License
 

@@ -7,7 +7,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-...
+This is a major version bump to switch between `org.clojure/tools.nrepl` and the
+newer stand-alone `nrepl` project. This release requires leiningen `2.8.2` or
+higher to get the right nREPL version.
+
+### Changed
+- Switch from nREPL contrib to new independent project.
+- Drop custom `render-values` nREPL middleware and var haxin.
+
+### Added
+- Whidbey uses the new nREPL `:printer` framework and respects per-message
+  `:print-options` overrides.
 
 ## [1.3.1] - 2016-10-07
 
