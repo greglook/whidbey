@@ -9,5 +9,5 @@
   :min-lein-version "2.8.2"
 
   :dependencies
-  [[mvxcvi/puget "1.0.3"]
+  [[mvxcvi/puget "1.1.0"]
    [org.clojure/data.codec "0.1.1"]])

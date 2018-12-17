@@ -8,6 +8,7 @@
 (def options
   "Rendering options."
   {:print-color true
+   :namespace-maps true
    :seq-limit 100
    :extend-notation true
    :escape-types #{'clj_http.headers.HeaderMap
