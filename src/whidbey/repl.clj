@@ -47,9 +47,8 @@
 (defn- print-options
   "Construct a map of print options to pass to Puget."
   [opts]
-  (-> options
-      (puget/merge-options opts)
-      (assoc :print-handlers (print-handlers opts))))
+  (let [opts (puget/merge-options options opts)]
+    (assoc opts :print-handlers (print-handlers opts))))
 
 
 (defn render-str
