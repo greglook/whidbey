@@ -7,11 +7,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+...
+
+## [2.0.0] - 2018-12-16
+
 This is a major version bump to switch between `org.clojure/tools.nrepl` and the
 newer stand-alone `nrepl` project. This release requires leiningen `2.8.2` or
 higher to get the right nREPL version.
 
 ### Changed
+- Drop deprecated implicit middleware in favor of explicit
+  `amperity.plugin/repl-pprint`.
 - Switch from nREPL contrib to new independent project.
 - Drop custom `render-values` nREPL middleware and var haxin.
 
@@ -130,7 +136,8 @@ First "stable" release!
 - Add `whidbey.plugin` namespace to automatically enable rendering in Leiningen
   `repl` tasks.
 
-[Unreleased]: https://github.com/greglook/whidbey/compare/1.3.1...HEAD
+[Unreleased]: https://github.com/greglook/whidbey/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/greglook/whidbey/compare/1.3.1...2.0.0
 [1.3.1]: https://github.com/greglook/whidbey/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/greglook/whidbey/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/greglook/whidbey/compare/1.1.1...1.2.0
