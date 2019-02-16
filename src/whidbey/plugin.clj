@@ -21,9 +21,13 @@
   [version options]
   (->
     `{:dependencies [[mvxcvi/whidbey ~(or version "RELEASE")]]
-      :repl-options {:nrepl-context {:interactive-eval {:printer whidbey.repl/render-str}}
-                     :init (do (require 'whidbey.repl)
-                               (whidbey.repl/init! ~options))}}
+      ;; :init is run once when the server starts
+      ;; :custom-init is run on session creation
+      :repl-options {:init (do (require 'whidbey.repl)
+                               (whidbey.repl/init! ~options))
+                     :custom-init (whidbey.repl/update-print-fn!)
+                     ;; :printer is nrepl 0.5.x only
+                     :nrepl-context {:interactive-eval {:printer whidbey.repl/render-str}}}}
     (vary-meta assoc :repl true)))
 
 

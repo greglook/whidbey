@@ -51,6 +51,16 @@
     (assoc opts :print-handlers (print-handlers opts))))
 
 
+(defn render
+  "Renders the given value for display by pretty-printing it on the given writer
+  using Puget and the configured options."
+  ([value writer]
+   (render value writer nil))
+  ([value writer opts]
+   (binding [*out* writer]
+     (puget/pprint value (print-options opts)))))
+
+
 (defn render-str
   "Renders the given value to a display string by pretty-printing it using Puget
   and the configured options."
@@ -62,6 +72,14 @@
 
 
 ;; ## Initialization
+
+(defn update-print-fn!
+  "Updates nREPL's printing configuration to use Puget. nREPL 0.6.0+ only."
+  []
+  (some-> (find-ns 'nrepl.middleware.print)
+          (ns-resolve '*print-fn*)
+          (var-set render)))
+
 
 (defn update-options!
   "Updates the current rendering options by merging in the supplied map."
