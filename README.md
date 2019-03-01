@@ -20,8 +20,8 @@ necessary nREPL and plugin functionality.
 
 [![Clojars Project](http://clojars.org/mvxcvi/whidbey/latest-version.svg)](http://clojars.org/mvxcvi/whidbey)
 
-You'll also need to activate the plugin middleware; to do this add the following
-to your profile as well:
+Since Leiningen has deprecated implicit plugin middleware, you'll need to
+activate it by ading the following to your profile as well:
 
 ```clojure
 :middleware [whidbey.plugin/repl-pprint]

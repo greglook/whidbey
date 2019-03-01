@@ -9,6 +9,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ...
 
+## [2.1.0]
+
+### Fixed
+- Add support for nrepl 0.6.0 which is used by leiningen 2.9.0.
+  [#27](//github.com/greglook/whidbey/issues/27)
+  [#28](//github.com/greglook/whidbey/pull/28)
+- The `:init` and `:custom-init` forms in `:repl-options` are preserved in
+  whidbey's generated profile.
+  [#21](//github.com/greglook/whidbey/issues/21)
+
 ## [2.0.0] - 2018-12-16
 
 This is a major version bump to switch between `org.clojure/tools.nrepl` and the
@@ -136,7 +146,8 @@ First "stable" release!
 - Add `whidbey.plugin` namespace to automatically enable rendering in Leiningen
   `repl` tasks.
 
-[Unreleased]: https://github.com/greglook/whidbey/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/greglook/whidbey/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/greglook/whidbey/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/greglook/whidbey/compare/1.3.1...2.0.0
 [1.3.1]: https://github.com/greglook/whidbey/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/greglook/whidbey/compare/1.2.0...1.3.0
