@@ -18,13 +18,22 @@
 
 (defn- whidbey-profile
   "Constructs a profile map for enabling the repl hooks."
-  [version options]
-  (->
-    `{:dependencies [[mvxcvi/whidbey ~(or version "RELEASE")]]
-      :repl-options {:nrepl-context {:interactive-eval {:printer whidbey.repl/render-str}}
-                     :init (do (require 'whidbey.repl)
-                               (whidbey.repl/init! ~options))}}
-    (vary-meta assoc :repl true)))
+  [project]
+  (let [version (find-plugin-version project 'mvxcvi/whidbey)
+        options (:whidbey project)
+        {:keys [init custom-init]} (:repl-options project)]
+    (-> `{:dependencies [[mvxcvi/whidbey ~(or version "RELEASE")]]
+          ;; :init is run once when the server starts
+          ;; :custom-init is run on session creation
+          ;; ^:replace to workaround https://github.com/technomancy/leiningen/issues/878
+          :repl-options {:init ^:replace (do ~init
+                                             (require 'whidbey.repl)
+                                             (whidbey.repl/init! ~options))
+                         :custom-init ^:replace (do ~custom-init
+                                                    (whidbey.repl/update-print-fn!))
+                         ;; :printer is nrepl 0.5.x only
+                         :nrepl-context {:interactive-eval {:printer whidbey.repl/render-str}}}}
+        (vary-meta assoc :repl true))))
 
 
 (defn repl-pprint
@@ -34,7 +43,5 @@
   [project]
   (if (:whidbey/repl (:profiles project))
     project
-    (let [options (:whidbey project)
-          version (find-plugin-version project 'mvxcvi/whidbey)
-          profile (whidbey-profile version options)]
+    (let [profile (whidbey-profile project)]
       (project/add-profiles project {:whidbey/repl profile}))))
