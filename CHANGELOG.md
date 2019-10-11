@@ -7,7 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-...
+### Changed
+- Upgrade puget to 1.2.0 to fix a few issues.
+- Remove dependency on `org.clojure/data.codec`.
 
 ## [2.1.1] - 2019-03-18
 
