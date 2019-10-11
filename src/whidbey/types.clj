@@ -1,16 +1,17 @@
 (ns whidbey.types
   "Rendering extensions for various custom types such as byte arrays and URI
   strings."
-  (:require
-    [clojure.data.codec.base64 :as b64])
   (:import
-    java.net.URI))
+    java.net.URI
+    java.util.Base64))
 
 
 (defn bin-str
   "Renders a byte array as a base-64 encoded string."
-  [bin]
-  (apply str (map char (b64/encode bin))))
+  [^bytes bin]
+  (-> (Base64/getUrlEncoder)
+      (.withoutPadding)
+      (.encodeToString bin)))
 
 
 (defn read-bin
@@ -18,7 +19,7 @@
   for `whidbey/bin` literals."
   ^bytes
   [^String bin]
-  (b64/decode (.getBytes bin)))
+  (.decode (Base64/getUrlDecoder) bin))
 
 
 (defn read-uri
