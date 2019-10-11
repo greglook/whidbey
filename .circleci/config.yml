@@ -1,0 +1,46 @@
+version: 2.1
+
+# Common executor configuration
+executors:
+  clojure:
+    docker:
+      - image: circleci/clojure:openjdk-11-lein-2.9.1
+    working_directory: ~/repo
+
+
+# Job definitions
+jobs:
+  style:
+    executor: clojure
+    steps:
+      - checkout
+      - run:
+          name: Install cljfmt CLI
+          environment:
+            CLJFMT_VERSION: 0.8.3
+          command: |
+            wget https://github.com/greglook/cljfmt/releases/download/${CLJFMT_VERSION}/cljfmt_${CLJFMT_VERSION}_linux.tar.gz
+            tar -xzf cljfmt_${CLJFMT_VERSION}_linux.tar.gz
+      - run:
+          name: Check source formatting
+          command: "./cljfmt check --stats style-stats.tsv"
+      - store_artifacts:
+          path: style-stats.tsv
+          destination: style
+
+  check:
+    executor: clojure
+    environment:
+      LEIN_USE_BOOTCLASSPATH: no
+    steps:
+      - checkout
+      - run: lein check
+
+
+# Workflow definitions
+workflows:
+  version: 2
+  test:
+    jobs:
+      - style
+      - check
