@@ -1,6 +1,8 @@
 whidbey
 =======
 
+[![Build Status](https://circleci.com/gh/greglook/whidbey.svg?style=shield&circle-token=28b1a3241663836937ffb5df9a451e5727625c65)](https://circleci.com/gh/greglook/whidbey)
+
 This is a plugin for [Leiningen](http://leiningen.org/) which changes the REPL
 to pretty-print results with [Puget](https://github.com/greglook/puget).
 
