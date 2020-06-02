@@ -1,4 +1,4 @@
-(defproject mvxcvi/whidbey "2.2.1-SNAPSHOT"
+(defproject mvxcvi/whidbey "2.2.1"
   :description "nREPL middleware to allow arbitrary value rendering."
   :url "https://github.com/greglook/whidbey"
   :license {:name "Public Domain"
@@ -9,4 +9,4 @@
   :min-lein-version "2.8.2"
 
   :dependencies
-  [[mvxcvi/puget "1.2.0"]])
+  [[mvxcvi/puget "1.3.1"]])
