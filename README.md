@@ -2,6 +2,7 @@ whidbey
 =======
 
 [![Build Status](https://circleci.com/gh/greglook/whidbey.svg?style=shield&circle-token=28b1a3241663836937ffb5df9a451e5727625c65)](https://circleci.com/gh/greglook/whidbey)
+[![cljdoc](https://cljdoc.org/badge/mvxcvi/whidbey)](https://cljdoc.org/d/mvxcvi/whidbey/CURRENT)
 
 This is a plugin for [Leiningen](http://leiningen.org/) which changes the REPL
 to pretty-print results with [Puget](https://github.com/greglook/puget).
@@ -45,7 +46,7 @@ profile map:
           ...}
 ```
 
-See the [`puget.printer`](https://greglook.github.io/puget/api/puget.printer.html)
+See the [`puget.printer`](https://cljdoc.org/d/mvxcvi/puget/CURRENT/api/puget.printer)
 namespace for the available configuration.
 
 If you feel like adjusting Whidbey's configuration at runtime, you can use the
